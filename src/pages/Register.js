@@ -61,6 +61,11 @@ const Register = () => {
                     Are you a existing user?<Link to='/login'>Sign in</Link>
                 </div>
                 <button type="submit" className="btn btn-outline-primary mt-3" onClick={() => handleRegister()}>Submit</button>
+                <div className="text-left mt-4">
+                                    <Link to="/" className="btn btn-outline-primary mt-3 ms-2">
+                                        ← Back to Home
+                                    </Link>
+                                </div>
             </div>
         </div>
     )

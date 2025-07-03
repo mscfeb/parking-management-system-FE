@@ -1,6 +1,6 @@
 .banner {
     height: 700px;
-    background-image: url('./../img/parking-banner.jpg');
+    background-image: url('./../img/car-home-screen.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
@@ -23,7 +23,7 @@
 
 
 .services-card-icon {
-    height: 230px;
+    height: 100px;
     object-fit: contain;
     background-color: #fff;
     border-radius: 10px;
@@ -58,4 +58,26 @@
     strong {
         font-size: 20px;
     }
+}
+
+@media (max-width: 768px){
+    .banner {
+    height: 50%;
+    background-image: url('./../img/car-home-screen.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.services-card-icon {
+    height: 50px;
+    object-fit: contain;
+    background-color: #fff;
+    border-radius: 10px;
+    max-width :100px;
+    margin: auto;
+
+}
+
 }

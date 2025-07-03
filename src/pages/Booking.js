@@ -111,39 +111,87 @@ const Booking = () => {
 
 
     return (
-        <div className='container'>
-            <h1 className='mt-5'>My Bookings</h1>
+       <div className='container'>
+  <h1 className='mt-5'>My Bookings</h1>
 
-            <div className='row mt-2 g-5 table-responsive'>
-                <table className="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Vehicle company</th>
-                            <th scope="col">Vehicle model</th>
-                            <th scope="col">Plate number</th>
-                            <th scope="col">Car color</th>
-                            <th scope="col">Space</th>
-                            <th scope="col">Space Date</th>
-                            <th scope="col">Slot start time</th>
-                            <th scope="col">Slot end time</th>
-                            <th scope="col">Booking time</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings?.length > 0 ?
-                            bookingsRow()
-                            :
-                            <tr className='col-md-4 text-center'>
-                                <td colSpan={12}><em>No bookings found</em></td>
-                            </tr>}
-                    </tbody>
-                </table>
+  {/* Table View for sm and up */}
+  <div className='row mt-2 g-5 table-responsive d-none d-sm-block'>
+    <table className="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Vehicle company</th>
+          <th>Vehicle model</th>
+          <th>Plate number</th>
+          <th>Car color</th>
+          <th>Space</th>
+          <th>Space Date</th>
+          <th>Slot start time</th>
+          <th>Slot end time</th>
+          <th>Booking time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {bookings?.length > 0 ? (
+          bookingsRow()
+        ) : (
+          <tr className='text-center'>
+            <td colSpan={12}><em>No bookings found</em></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+
+  {/* Card View for xs only */}
+  <div className='row mt-2 g-3 d-block d-sm-none'>
+    {bookings?.length > 0 ? (
+      bookings.map((item, index) => (
+        <div className="col-12" key={index}>
+          <div className="card shadow-sm p-3">
+            <h5 className='card-title'>#{index + 1} - {item?.vehicle_company} {item?.vehicle_model}</h5>
+            <div className="card-body p-2">
+              <p><strong>Plate:</strong> {item?.plate_number}</p>
+              <p><strong>Color:</strong> {item?.car_color}</p>
+              <p><strong>Space:</strong> {item?.space_id?.name}</p>
+              <p><strong>Date:</strong> {moment.utc(item?.space_id?.date).format('DD-MM-YYYY')}</p>
+              <p><strong>Time:</strong> {item?.space_id?.slot_start_time} - {item?.space_id?.slot_end_time}</p>
+              <p><strong>Booked at:</strong> {moment.utc(item?.createdAt).format('DD-MM-YYYY / hh:mm a')}</p>
+              <p><strong>Status:</strong> {item?.confirm_booking}</p>
+
+              <div className="d-flex gap-2 flex-wrap mt-2">
+                {user?.type === 'seeker' ? (
+                  <button className='btn btn-outline-danger btn-sm' onClick={() => handleDelete(item)}>
+                    Delete
+                  </button>
+                ) : item?.confirm_booking === 'pending' ? (
+                  <>
+                    <button className='btn btn-outline-success btn-sm' onClick={() => handleUpdateBooking({ id: item?._id, confirm_booking: 'approved' })}>
+                      Approve
+                    </button>
+                    <button className='btn btn-outline-danger btn-sm' onClick={() => handleUpdateBooking({ id: item?._id, confirm_booking: 'rejected' })}>
+                      Reject
+                    </button>
+                  </>
+                ) : (
+                  <span className='text-muted'>Done</span>
+                )}
+              </div>
             </div>
-            <DeleteModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} onDeleteConfirm={handleDeleteBooking} />
+          </div>
         </div>
+      ))
+    ) : (
+      <div className='text-center'><em>No bookings found</em></div>
+    )}
+  </div>
+
+  {/* Delete Modal */}
+  <DeleteModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} onDeleteConfirm={handleDeleteBooking} />
+</div>
+
     )
 }
 
